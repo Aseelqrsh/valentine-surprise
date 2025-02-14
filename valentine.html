@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Will You Be My Valentine?</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            color: #d32f2f;
+            text-align: center;
+            padding: 50px;
+            margin: 0;
+            background-image: url('https://drive.google.com/uc?export=download&id=1bYA51lIVFjq2GQMc7ioHJ5Y3oC2Sl1kl'); /* Direct link to your image */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden; /* Hide overflow for falling effects */
+            position: relative;
+        }
+        .container {
+            background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent white background */
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            position: relative;
+            z-index: 2; /* Ensure content is above effects */
+        }
+        h1 {
+            font-size: 3em;
+            margin-bottom: 20px;
+        }
+        p {
+            font-size: 1.5em;
+            margin-bottom: 30px;
+        }
+        .heart {
+            color: #d32f2f;
+            font-size: 5em;
+            animation: beat 1s infinite;
+        }
+        @keyframes beat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+        button {
+            background-color: #d32f2f;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.2em;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: transform 0.3s ease;
+        }
+        button:hover {
+            background-color: #b71c1c;
+        }
+        #noButton {
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        /* Falling Roses */
+        .rose {
+            position: absolute;
+            top: -50px;
+            animation: fall linear infinite;
+            font-size: 24px;
+            color: #ff007f;
+            z-index: 1;
+        }
+        @keyframes fall {
+            to {
+                transform: translateY(100vh);
+            }
+        }
+
+        /* Glitter Effect */
+        .glitter {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: gold;
+            border-radius: 50%;
+            animation: glitter 2s infinite;
+            z-index: 1;
+        }
+        @keyframes glitter {
+            0%, 100% { opacity: 0; }
+            50% { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Hey Love,</h1>
+        <p>Even though we're miles apart, you're always in my heart.</p>
+        <div class="heart">❤️</div>
+        <p>Will you be my Valentine this year?</p>
+        <div class="buttons">
+            <button id="yesButton">Yes</button>
+            <button id="noButton">No</button>
+        </div>
+        <p id="response" style="display:none; font-size: 1.2em; margin-top: 20px; text-align: left;"></p>
+    </div>
+
+    <!-- Falling Roses -->
+    <div id="roses"></div>
+
+    <!-- Glitter Effect -->
+    <div id="glitter"></div>
+
+    <script>
+        // Custom response paragraph
+        const responseParagraph = `
+            Hey babe,<br><br>
+            Ughgg, I miss you like crazy. Just wanted to say I love you like, sooo much it’s kinda dumb. 
+            Placements are eating me rn, and I hate that I’m stuck being “busy” all the time. But I swear, 
+            even when I’m busy in work, you’re the first thing I think about when I wake up and the last before I sleep. 
+            I don’t know how you’re doing it handling a whole new country, still texting me dumb memes, 
+            and putting up with my chaotic schedule? You’re just amazing.<br><br>
+
+            I’m not great at this stuff, but I need you to know I’ll keep loving you every day, no matter what, 
+            and I’ll always be here even if it’s your random miss you calls or venting sessions. And yes, 
+            I’m gonna work my ass off so one day I can marry you and we can finally stop doing time zones. 
+            I’ll fight for us always, and keep building a future where I deserve to call you mine forever. 
+            Until then, just… stick with me? You’re my everything love.<br><br>
+
+            I love you more than words babe today, tomorrow, and forever after. ❤️🧿<br><br>
+
+            I miss youuuu sooo mucchhh!!😭🫶🏻
+        `;
+
+        // Show response when "Yes" is clicked
+        document.getElementById('yesButton').addEventListener('click', () => {
+            const responseElement = document.getElementById('response');
+            responseElement.innerHTML = responseParagraph; // Use innerHTML to preserve line breaks
+            responseElement.style.display = 'block';
+            
+            // Remove buttons after response
+            document.querySelector('.buttons').style.display = 'none';
+        });
+
+        // Make "No" button move when hovered
+        const noButton = document.getElementById('noButton');
+        noButton.addEventListener('mouseover', () => {
+            const container = document.querySelector('.container');
+            const containerRect = container.getBoundingClientRect();
+            
+            // Calculate new position ensuring it stays within container
+            const newX = Math.random() * (containerRect.width - noButton.offsetWidth - 20);
+            const newY = Math.random() * (containerRect.height - noButton.offsetHeight - 20);
+            
+            // Move the button
+            noButton.style.position = 'absolute';
+            noButton.style.left = `${newX}px`;
+            noButton.style.top = `${newY}px`;
+        });
+
+        // Make "No" button unclickable
+        noButton.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+        });
+
+        // Function to create falling roses
+        function createRoses() {
+            const rosesContainer = document.getElementById('roses');
+            for (let i = 0; i < 20; i++) {
+                const rose = document.createElement('div');
+                rose.className = 'rose';
+                rose.innerHTML = '🌹';
+                rose.style.left = `${Math.random() * 100}vw`;
+                rose.style.animationDuration = `${Math.random() * 5 + 5}s`;
+                rosesContainer.appendChild(rose);
+            }
+        }
+
+        // Function to create glitter
+        function createGlitter() {
+            const glitterContainer = document.getElementById('glitter');
+            for (let i = 0; i < 50; i++) {
+                const glitter = document.createElement('div');
+                glitter.className = 'glitter';
+                glitter.style.left = `${Math.random() * 100}vw`;
+                glitter.style.top = `${Math.random() * 100}vh`;
+                glitter.style.animationDuration = `${Math.random() * 2 + 1}s`;
+                glitterContainer.appendChild(glitter);
+            }
+        }
+
+        // Initialize effects
+        createRoses();
+        createGlitter();
+    </script>
+</body>
+</html>
